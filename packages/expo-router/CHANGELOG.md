@@ -7,8 +7,16 @@
 ### 🎉 New features
 
 - Add modal component ([#37365](https://github.com/expo/expo/pull/37365) by [@Ubax](https://github.com/Ubax))
+- Add experimental link preview (iOS only) ([#37336](https://github.com/expo/expo/pull/37336) by [@Ubax](https://github.com/Ubax))
+- Allow for multiple children in Link.Trigger ([#37700](https://github.com/expo/expo/pull/37700) by [@Ubax](https://github.com/Ubax))
+- Add icon prop to Link.MenuAction ([#37783](https://github.com/expo/expo/pull/37783) by [@Ubax](https://github.com/Ubax))
+- Add submenus to link preview context menu ([#37784](https://github.com/expo/expo/pull/37784) by [@Ubax](https://github.com/Ubax))
+- [web] Add styled modals and sheets on web with a custom modal stack using vaul ([#37767](https://github.com/expo/expo/pull/37767) by [@hirbod](https://github.com/hirbod))
 
 ### 🐛 Bug fixes
+
+- fix web back/forward buttons ([#37747](https://github.com/expo/expo/pull/37747) by [@Ubax](https://github.com/Ubax))
+- fix link with preview on web and Android ([#37800](https://github.com/expo/expo/pull/37800) by [@Ubax](https://github.com/Ubax))
 
 ### 💡 Others
 
@@ -30,7 +38,6 @@
 
 - Headless useSitemap() hook. ([#36895](https://github.com/expo/expo/pull/36895) by [@douglowder](https://github.com/douglowder))
 - Add Tabs.Protected ([#37085](https://github.com/expo/expo/pull/37085) by [@marklawlor](https://github.com/marklawlor))
-- Add experimental link preview (iOS only) ([#37336](https://github.com/expo/expo/pull/37336) by [@Ubax](https://github.com/Ubax))
 
 ### 🐛 Bug fixes
 

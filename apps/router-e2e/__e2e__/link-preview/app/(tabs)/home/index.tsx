@@ -1,6 +1,6 @@
 import { Link, usePathname } from 'expo-router';
 import React, { useEffect, useRef, useState } from 'react';
-import { View, Text, useWindowDimensions } from 'react-native';
+import { View, Text, useWindowDimensions, TouchableOpacity } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const HomeIndex = () => {
@@ -28,6 +28,32 @@ const HomeIndex = () => {
       </Link>
       <Link href="/(tabs)/home/one">Normal link: /(tabs)/home/one</Link>
       <Link href="/(tabs)/home/one">
+        <Link.Trigger>Normal link with trigger: /(tabs)/home/one</Link.Trigger>
+      </Link>
+      <Link href="/(tabs)/home/one" asChild>
+        <Link.Trigger>
+          <TouchableOpacity>
+            <Text>Normal link with trigger asChild: /(tabs)/home/one</Text>
+          </TouchableOpacity>
+        </Link.Trigger>
+      </Link>
+      <Link href="/(tabs)/home/one">
+        <Link.Trigger>
+          <Text>Normal link with trigger: /(tabs)/home/one</Text>
+          <View style={{ width: 20, height: 20, backgroundColor: 'orange' }} />
+          <Text>Multiple children</Text>
+        </Link.Trigger>
+      </Link>
+      <Link href="/(tabs)/home/one" asChild>
+        <Link.Trigger>
+          <TouchableOpacity style={{ backgroundColor: '#fff' }}>
+            <Text>Normal link with trigger: /(tabs)/home/one</Text>
+            <View style={{ width: 20, height: 20, backgroundColor: 'orange' }} />
+            <Text>Multiple children</Text>
+          </TouchableOpacity>
+        </Link.Trigger>
+      </Link>
+      <Link href="/(tabs)/home/one">
         <Link.Trigger>Link.Preview: /(tabs)/home/one</Link.Trigger>
         <Link.Preview />
       </Link>
@@ -46,10 +72,42 @@ const HomeIndex = () => {
       <Link href="/(tabs)/home/one">
         <Link.Trigger>Link.Menu: /(tabs)/home/one</Link.Trigger>
         <Link.Preview />
-        <Link.Menu>
-          <Link.MenuAction title="Share" onPress={() => {}} />
-          <Link.MenuAction title="Copy" onPress={() => {}} />
-          <Link.MenuAction title="Delete" onPress={() => {}} />
+        <Link.Menu title="Actions" icon="ellipsis">
+          <Link.MenuAction
+            title="Share"
+            icon="square.and.arrow.up"
+            onPress={() => {
+              console.log('Share Pressed');
+            }}
+          />
+          <Link.MenuAction
+            title="Copy"
+            icon="doc.on.doc"
+            onPress={() => {
+              console.log('Copy Pressed');
+            }}
+          />
+          <Link.MenuAction
+            title="Delete"
+            icon="trash"
+            onPress={() => {
+              console.log('Delete Pressed');
+            }}
+          />
+          <Link.Menu title="More" icon="ellipsis">
+            <Link.MenuAction
+              title="Submenu Item 1"
+              onPress={() => {
+                console.log('Submenu Item 1 Pressed');
+              }}
+            />
+            <Link.MenuAction
+              title="Submenu Item 2"
+              onPress={() => {
+                console.log('Submenu Item 2 Pressed');
+              }}
+            />
+          </Link.Menu>
         </Link.Menu>
       </Link>
       <Link href="/(tabs)/settings">
