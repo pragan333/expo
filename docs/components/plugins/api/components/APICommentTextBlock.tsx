@@ -101,7 +101,7 @@ export const APICommentTextBlock = ({
   return (
     <div
       className={mergeClasses(
-        includeSpacing && hasContent && 'px-4 [table_&]:!mb-0 [table_&]:px-0',
+        includeSpacing && 'px-4 [table_&]:!mb-0 [table_&]:px-0',
         emptyCommentFallback && !hasContent && 'text-quaternary'
       )}>
       {includePlatforms && hasPlatforms && (
