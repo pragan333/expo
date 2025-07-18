@@ -99,6 +99,7 @@ public final class UpdatesConfig: NSObject {
   public let runtimeVersion: String
   public let hasEmbeddedUpdate: Bool
   public let disableAntiBrickingMeasures: Bool
+  public let hasUpdatesOverride: Bool
 
   internal required init(
     scopeKey: String,
@@ -110,7 +111,8 @@ public final class UpdatesConfig: NSObject {
     runtimeVersion: String,
     hasEmbeddedUpdate: Bool,
     enableExpoUpdatesProtocolV0CompatibilityMode: Bool,
-    disableAntiBrickingMeasures: Bool
+    disableAntiBrickingMeasures: Bool,
+    hasUpdatesOverride: Bool
   ) {
     self.scopeKey = scopeKey
     self.updateUrl = updateUrl
@@ -122,6 +124,7 @@ public final class UpdatesConfig: NSObject {
     self.hasEmbeddedUpdate = hasEmbeddedUpdate
     self.enableExpoUpdatesProtocolV0CompatibilityMode = enableExpoUpdatesProtocolV0CompatibilityMode
     self.disableAntiBrickingMeasures = disableAntiBrickingMeasures
+    self.hasUpdatesOverride = hasUpdatesOverride
   }
 
   private static func configDictionaryWithExpoPlist(mergingOtherDictionary: [String: Any]?) throws -> [String: Any] {
@@ -276,7 +279,39 @@ public final class UpdatesConfig: NSObject {
       runtimeVersion: runtimeVersion,
       hasEmbeddedUpdate: hasEmbeddedUpdate,
       enableExpoUpdatesProtocolV0CompatibilityMode: enableExpoUpdatesProtocolV0CompatibilityMode,
-      disableAntiBrickingMeasures: getDisableAntiBrickingMeasures(fromDictionary: config)
+      disableAntiBrickingMeasures: getDisableAntiBrickingMeasures(fromDictionary: config),
+      hasUpdatesOverride: configOverride != nil
+    )
+  }
+
+  internal static func config(
+    fromConfig config: UpdatesConfig,
+    configOverride: UpdatesConfigOverride?
+  ) -> UpdatesConfig {
+    let updateUrl: URL
+    let requestHeaders: [String: String]
+    let hasEmbeddedUpdate: Bool
+    if config.disableAntiBrickingMeasures {
+      updateUrl = configOverride?.updateUrl ?? config.updateUrl
+      requestHeaders = configOverride?.requestHeaders ?? config.requestHeaders
+      hasEmbeddedUpdate = configOverride == nil
+    } else {
+      updateUrl = config.updateUrl
+      requestHeaders = config.requestHeaders
+      hasEmbeddedUpdate = true
+    }
+    return UpdatesConfig(
+      scopeKey: config.scopeKey,
+      updateUrl: updateUrl,
+      requestHeaders: requestHeaders,
+      launchWaitMs: config.launchWaitMs,
+      checkOnLaunch: config.checkOnLaunch,
+      codeSigningConfiguration: config.codeSigningConfiguration,
+      runtimeVersion: config.runtimeVersion,
+      hasEmbeddedUpdate: hasEmbeddedUpdate,
+      enableExpoUpdatesProtocolV0CompatibilityMode: config.enableExpoUpdatesProtocolV0CompatibilityMode,
+      disableAntiBrickingMeasures: config.disableAntiBrickingMeasures,
+      hasUpdatesOverride: configOverride != nil
     )
   }
 
