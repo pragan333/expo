@@ -36,15 +36,20 @@ class ExpoNetworkModule extends NativeModule<NetworkEvents> {
     return false;
   }
   startObserving() {
+    if (typeof window === 'undefined') {
+      return;
+    }
     this.eventListener = () => this.updateNetworkState();
     window.addEventListener('online', this.eventListener);
     window.addEventListener('offline', this.eventListener);
   }
   stopObserving() {
-    if (this.eventListener) {
-      window.removeEventListener('online', this.eventListener);
-      window.removeEventListener('offline', this.eventListener);
+    if (typeof window === 'undefined' || !this.eventListener) {
+      return;
     }
+    window.removeEventListener('online', this.eventListener);
+    window.removeEventListener('offline', this.eventListener);
+    this.eventListener = undefined;
   }
 }
 
