@@ -17,13 +17,13 @@ describe(modifyFileDuringPipe, () => {
       }).path
     ).toEqual('_package/.vscode/settings.json');
   });
-  it(`does not rename multiple instances of _vscode`, () => {
+  it(`renames multiple instances of _vscode`, () => {
     expect(
       modifyFileDuringPipe({
         path: '_package/_vscode/foo/_vscode/settings.json',
         type: 'File',
       }).path
-    ).toEqual('_package/.vscode/foo/_vscode/settings.json');
+    ).toEqual('_package/.vscode/foo/.vscode/settings.json');
   });
 });
 
