@@ -6,7 +6,11 @@
 
 ### 🎉 New features
 
+- Support building activities with aliases. ([#38263](https://github.com/expo/expo/pull/38263) by [@EvanBacon](https://github.com/EvanBacon))
+
 ### 🐛 Bug fixes
+
+- Improve error handling in plugin resolver ([#38338](https://github.com/expo/expo/pull/38338) by [@hirbod](https://github.com/hirbod))
 
 ### 💡 Others
 
