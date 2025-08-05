@@ -36,11 +36,7 @@ type SourceFileImportRef = {
 // We are incrementally rolling this out, the sdk packages in this list are expected to be invalid
 const IGNORED_PACKAGES = [
   '@expo/html-elements', // package: react, react-native, react-native-web
-  'expo-av', // package: expo-asset
-  'expo-font', // package: expo-asset
   'expo-gl', // package: react-dom, react-native-reanimated
-  'expo-sqlite', // package: expo-asset
-  'expo-store-review', // package: expo-constants
   'expo-updates', // cli: @expo/plist, debug, getenv - utils: @expo/cli, @expo/metro-config, metro
 ];
 
@@ -56,8 +52,15 @@ const SPECIAL_DEPENDENCIES: Record<string, Record<string, IgnoreKind | void> | v
     '@expo/config-plugins/build/utils/warnings.js': 'ignore-dev', // TODO: Remove
   },
 
+  'expo-font': {
+    '@expo/config-plugins/build/android/codeMod': 'ignore-dev', // TODO: Remove
+    '@expo/config-plugins/build/utils/generateCode': 'ignore-dev', // TODO: Remove
+  },
+
   '@expo/cli': {
     eslint: 'ignore-dev', // TODO: Switch to resolve-from / project root require
+    'expo-constants/package.json': 'ignore-dev', // TODO: Should probably be a peer, but it's both installed in templates and also a dep of expo (needs discussion)
+    'metro-runtime/package.json': 'ignore-dev', // NOTE: Only used in developmnt in the expo/expo monorepo
   },
 
   'expo-router': {
@@ -74,7 +77,15 @@ const SPECIAL_DEPENDENCIES: Record<string, Record<string, IgnoreKind | void> | v
     'babel-preset-expo': 'ignore-dev', // TODO: Remove; only used as a fallback for now
   },
 
+  'jest-expo': {
+    'babel-preset-expo': 'ignore-dev', // TODO: Remove; only used as a fallback for now
+  },
+
   '@expo/metro-runtime': {
+    'expo-constants': 'ignore-dev', // TODO: Should probably be a peer, but it's both installed in templates and also a dep of expo (needs discussion)
+  },
+
+  'expo-store-review': {
     'expo-constants': 'ignore-dev', // TODO: Should probably be a peer, but it's both installed in templates and also a dep of expo (needs discussion)
   },
 
@@ -90,6 +101,7 @@ const SPECIAL_DEPENDENCIES: Record<string, Record<string, IgnoreKind | void> | v
 // NOTE: These are globally ignored dependencies, and this list shouldn't ever get longer
 const IGNORED_IMPORTS: Record<string, IgnoreKind | void> = {
   'expo-modules-core': 'ignore-dev',
+  'expo-asset': 'ignore-dev',
 
   // This is force-resolved in the CLI and therefore, for Expo modules, is generally safe
   // See: https://github.com/expo/expo/blob/d63143c/packages/%40expo/cli/src/start/server/metro/withMetroMultiPlatform.ts#L603-L622
@@ -305,6 +317,14 @@ function collectTypescriptImports(node: ts.Node | ts.SourceFile, imports: Source
     node.arguments.every((arg) => ts.isStringLiteral(arg)) // Filter `require(requireFrom(...))
   ) {
     // Collect `require` statement
+    imports.push(createTypescriptImportRef(node.arguments[0].getText()));
+  } else if (
+    ts.isCallExpression(node) &&
+    node.expression.getText() === 'require.resolve' &&
+    node.arguments.length === 1 && // Filter out `require.resolve('', { paths: ... })`
+    ts.isStringLiteral(node.arguments[0]) // Filter `require(requireFrom(...))
+  ) {
+    // Collect `require.resolve` statement
     imports.push(createTypescriptImportRef(node.arguments[0].getText()));
   } else {
     ts.forEachChild(node, (child) => {
