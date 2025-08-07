@@ -40,8 +40,11 @@ export function modifyFileDuringPipe(entry: Pick<ReadEntry, 'path' | 'type'>) {
     // For example, if the file is `_vscode`, we want to rename it to `.vscode`.
 
     // Match one instance of the supported directory name, starting with an underscore, and containing slashes on both sides.
-    const regex = new RegExp(`(^|/|\\\\)_(${SUPPORTED_DIRECTORIES.join('|')})(/|\\\\|$)`);
-    entry.path = entry.path.replace(regex, (match, p1, p2, p3) => `${p1}.${p2}${p3}`);
+  const directoryRegex = new RegExp(
+    `(^|/|\\\\)_(${SUPPORTED_DIRECTORIES.join('|')})(/|\\\\|$)`,
+    'g'
+  );
+  entry.path = entry.path.replace(directoryRegex, (_match, p1, p2, p3) => `${p1}.${p2}${p3}`);
   }
   return entry;
 }
