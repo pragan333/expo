@@ -11,8 +11,14 @@ export function sanitizedName(name: string) {
     .replace(/[\u0300-\u036f]/g, '');
 }
 
-// Directories that can be added to the template with an underscore instead of a dot, e.g. `.vscode` and be added with `_vscode`.
-const SUPPORTED_DIRECTORIES = ['eas', 'vscode', 'github', 'cursor'];
+// Directories that can be added to the template with an underscore instead of a dot,
+// e.g. `.vscode` can be added with `_vscode` in the template and renamed during install.
+export const SUPPORTED_DIRECTORIES = ['eas', 'vscode', 'github', 'cursor'];
+
+const UNDERSCORE_DIRECTORY_REGEX = new RegExp(
+  `(^|[\\/])_(${SUPPORTED_DIRECTORIES.join('|')})([\\/]|$)`,
+  'g'
+);
 
 function applyNameDuringPipe(entry: Pick<ReadEntry, 'path'>, name: string) {
   if (name) {
@@ -40,8 +46,10 @@ export function modifyFileDuringPipe(entry: Pick<ReadEntry, 'path' | 'type'>) {
     // For example, if the file is `_vscode`, we want to rename it to `.vscode`.
 
     // Match one instance of the supported directory name, starting with an underscore, and containing slashes on both sides.
-    const regex = new RegExp(`(^|/|\\\\)_(${SUPPORTED_DIRECTORIES.join('|')})(/|\\\\|$)`);
-    entry.path = entry.path.replace(regex, (match, p1, p2, p3) => `${p1}.${p2}${p3}`);
+    entry.path = entry.path.replace(
+      UNDERSCORE_DIRECTORY_REGEX,
+      (_match, p1, p2, p3) => `${p1}.${p2}${p3}`
+    );
   }
   return entry;
 }
