@@ -219,6 +219,13 @@ export const ScreensList: ScreenConfig[] = [
   },
   {
     getComponent() {
+      return optionalRequire(() => require('../screens/JokeGeneratorScreen'));
+    },
+    name: 'JokeGenerator',
+    options: { title: 'Joke Generator' },
+  },
+  {
+    getComponent() {
       return optionalRequire(() => require('../screens/KeepAwakeScreen'));
     },
     name: 'KeepAwake',
