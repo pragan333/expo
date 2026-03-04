@@ -150,6 +150,7 @@ export const home = [
     makePage('deploy/app-stores-metadata.mdx'),
     makePage('deploy/send-over-the-air-updates.mdx'),
     makePage('deploy/web.mdx'),
+    makePage('deploy/openclaw-gateway.mdx'),
   ]),
   makeSection('Monitor', [makePage('monitoring/services.mdx')]),
   makeSection('More', [makePage('core-concepts.mdx'), makePage('faq.mdx'), makePage('llms.mdx')]),
