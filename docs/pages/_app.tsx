@@ -1,6 +1,7 @@
 import { ThemeProvider } from '@expo/styleguide';
 import { MDXProvider } from '@mdx-js/react';
 import * as Sentry from '@sentry/react';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 import { MotionConfig } from 'framer-motion';
 import { AppProps } from 'next/app';
 import { Inter, JetBrains_Mono } from 'next/font/google';
@@ -94,6 +95,7 @@ export default function App({ Component, pageProps }: AppProps) {
           </ThemeProvider>
         </AnalyticsProvider>
       </MotionConfig>
+      <SpeedInsights />
     </>
   );
 }
