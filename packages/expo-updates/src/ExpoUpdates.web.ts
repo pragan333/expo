@@ -12,6 +12,7 @@ import {
   UpdatesLogEntry,
   UpdateFetchResultFailure,
   UpdateCheckResultNotAvailableReason,
+  ReloadScreenOptions,
 } from './Updates.types';
 
 class ExpoUpdatesModule extends NativeModule<UpdatesEvents> implements UpdatesModuleInterface {
@@ -45,6 +46,7 @@ class ExpoUpdatesModule extends NativeModule<UpdatesEvents> implements UpdatesMo
     isRestarting: false,
     restartCount: 0,
     sequenceNumber: 0,
+    downloadProgress: 0,
   };
 
   async reload(): Promise<void> {
@@ -74,6 +76,20 @@ class ExpoUpdatesModule extends NativeModule<UpdatesEvents> implements UpdatesMo
 
   async fetchUpdateAsync(): Promise<UpdateFetchResultFailure> {
     return { isNew: false, manifest: undefined, isRollBackToEmbedded: false };
+  }
+
+  setUpdateURLAndRequestHeadersOverride(
+    _configOverride: { updateUrl: string; requestHeaders: Record<string, string> } | null
+  ): void {
+    // No-op on web
+  }
+
+  async showReloadScreen(_options?: ReloadScreenOptions): Promise<void> {
+    // No-op on web
+  }
+
+  async hideReloadScreen(): Promise<void> {
+    // No-op on web
   }
 }
 

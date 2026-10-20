@@ -219,6 +219,13 @@ export const ScreensList: ScreenConfig[] = [
   },
   {
     getComponent() {
+      return optionalRequire(() => require('../screens/JokeGeneratorScreen'));
+    },
+    name: 'JokeGenerator',
+    options: { title: 'Joke Generator' },
+  },
+  {
+    getComponent() {
       return optionalRequire(() => require('../screens/KeepAwakeScreen'));
     },
     name: 'KeepAwake',
@@ -402,6 +409,12 @@ export const ScreensList: ScreenConfig[] = [
     },
     name: 'TrackingTransparency',
     options: { title: 'TrackingTransparency' },
+  },
+  {
+    getComponent() {
+      return optionalRequire(() => require('../screens/UpdatesScreen'));
+    },
+    name: 'Updates Reload Screen',
   },
   {
     getComponent() {

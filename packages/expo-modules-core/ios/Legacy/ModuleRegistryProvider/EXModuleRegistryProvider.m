@@ -32,7 +32,7 @@ extern void EXRegisterSingletonModule(Class singletonModuleClass)
 
   // A heuristic solution to "multiple singletons registering
   // to the same name" problem. Usually it happens when we want to
-  // override module singleton with an ExpoKit one. This solution
+  // override module singleton with a custom implementation. This solution
   // gives preference to subclasses.
 
   // If a superclass of a registering singleton is already registered

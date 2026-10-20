@@ -1,0 +1,141 @@
+---
+title: OpenClaw deployment gateway
+sidebar_title: OpenClaw gateway
+description: Learn how to use OpenClaw as a self-hosted AI automation gateway to automate Expo app deployments.
+---
+
+import { Terminal } from '~/ui/components/Snippet';
+import { Step } from '~/ui/components/Step';
+import { Collapsible } from '~/ui/components/Collapsible';
+import { BoxLink } from '~/ui/components/BoxLink';
+
+[OpenClaw](https://openclaw.ai) is an open-source AI automation framework that provides a self-hosted gateway for managing AI-driven workflows, including automated deployments. It connects to messaging platforms such as Telegram, Discord, Slack, and others, and supports AI providers including OpenAI, Anthropic, and Google Gemini.
+
+You can use OpenClaw as a deployment gateway to automate your Expo app deployments by routing deployment commands through AI-powered workflows.
+
+## Prerequisites
+
+<Collapsible summary="Node.js 22 or later">
+
+OpenClaw requires Node.js 22 or later. To check your Node.js version, run:
+
+<Terminal cmd={['$ node --version']} />
+
+</Collapsible>
+
+<Collapsible summary="EAS CLI installed and configured">
+
+You need EAS CLI installed and your project configured with EAS. If you haven't done this yet, see the [EAS Build setup guide](/build/setup/).
+
+<Terminal cmd={['$ npm install --global eas-cli', '$ eas login']} />
+
+</Collapsible>
+
+## Install OpenClaw
+
+<Step label="1">
+### Install the OpenClaw gateway
+
+Install OpenClaw globally using npm:
+
+<Terminal cmd={['$ npm install -g openclaw@latest']} />
+
+Alternatively, you can use the installer script on macOS or Linux:
+
+<Terminal cmd={['$ curl -fsSL https://openclaw.ai/install.sh | bash']} />
+
+</Step>
+
+<Step label="2">
+### Onboard and configure the gateway
+
+After installation, run the onboard command to configure your gateway. This sets up your AI provider credentials, messaging channel integrations, and any initial skills:
+
+<Terminal cmd={['$ openclaw onboard --install-daemon']} />
+
+The interactive setup will guide you through:
+
+- Selecting your preferred AI provider (OpenAI, Anthropic, Google Gemini, and others)
+- Connecting messaging channels such as Telegram, Discord, or Slack
+- Installing community or custom skills for your workflow
+
+</Step>
+
+<Step label="3">
+### Verify the gateway is running
+
+Once onboarding is complete, verify that the gateway is running correctly:
+
+<Terminal cmd={['$ openclaw status', '$ openclaw doctor']} />
+
+The `openclaw status` command shows the current state of the gateway, and `openclaw doctor` checks your configuration for any issues.
+
+</Step>
+
+## Automate Expo deployments
+
+With the OpenClaw gateway running, you can create skills or workflows to automate your Expo app deployments. The gateway can listen for commands from your configured messaging channels and trigger EAS build and deployment commands.
+
+### Example: Trigger a build via a messaging channel
+
+After connecting OpenClaw to a messaging platform (such as Slack or Discord), you can send a message to trigger an EAS build. OpenClaw routes the message through its AI agent, which executes the appropriate EAS CLI commands.
+
+An example workflow might:
+
+1. Receive a deployment request in your Slack channel (for example, `deploy my-app to production`)
+2. The OpenClaw gateway routes the request to the AI agent
+3. The agent runs `eas build --platform all` to start a build for all platforms
+4. The agent sends a notification back to the channel with the build URL
+
+You can customize this behavior by creating a skill in your **~/.openclaw/agents/** directory. See the [OpenClaw skills documentation](https://docs.openclaw.ai/skills) for details on how to write and register skills that integrate with EAS CLI commands.
+
+### Run OpenClaw with Docker
+
+For production deployments, you can run the OpenClaw gateway as a Docker container for better isolation and persistence:
+
+<Terminal
+  cmd={[
+    '$ docker run -d --name openclaw \\',
+    '  -v ~/.openclaw:/root/.openclaw \\',
+    '  -p 18789:18789 \\',
+    '  ghcr.io/openclaw/openclaw:latest',
+  ]}
+/>
+
+Then complete the onboarding inside the container:
+
+<Terminal cmd={['$ docker exec -it openclaw openclaw onboard']} />
+
+## Maintain the gateway
+
+Use the following commands to maintain and monitor the OpenClaw gateway:
+
+| Command | Description |
+| --- | --- |
+| `openclaw status` | Show the current gateway status |
+| `openclaw doctor` | Check configuration and diagnose issues |
+| `openclaw dashboard` | Open the browser-based management UI |
+
+To update the gateway to the latest version, re-run the install command or use the built-in update command:
+
+<Terminal cmd={['$ npm install -g openclaw@latest']} />
+
+## Additional resources
+
+<BoxLink
+  title="OpenClaw documentation"
+  description="Full installation and configuration reference for the OpenClaw gateway."
+  href="https://docs.openclaw.ai"
+/>
+
+<BoxLink
+  title="EAS Build"
+  description="Learn how to create production builds for your Expo apps with EAS Build."
+  href="/build/setup"
+/>
+
+<BoxLink
+  title="EAS Workflows"
+  description="Automate builds and deployments with EAS Workflows."
+  href="/eas/workflows/get-started"
+/>

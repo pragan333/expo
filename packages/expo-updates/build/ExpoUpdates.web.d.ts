@@ -1,6 +1,6 @@
 import { NativeModule } from 'expo-modules-core';
 import { UpdatesCheckAutomaticallyNativeValue, UpdatesEvents, UpdatesModuleInterface } from './ExpoUpdatesModule.types';
-import { Manifest, UpdatesNativeStateMachineContext, UpdateCheckResultNotAvailable, UpdatesLogEntry, UpdateFetchResultFailure } from './Updates.types';
+import { Manifest, UpdatesNativeStateMachineContext, UpdateCheckResultNotAvailable, UpdatesLogEntry, UpdateFetchResultFailure, ReloadScreenOptions } from './Updates.types';
 declare class ExpoUpdatesModule extends NativeModule<UpdatesEvents> implements UpdatesModuleInterface {
     isEmergencyLaunch: boolean;
     emergencyLaunchReason: string | null;
@@ -30,6 +30,12 @@ declare class ExpoUpdatesModule extends NativeModule<UpdatesEvents> implements U
     readLogEntriesAsync(maxAge: number): Promise<UpdatesLogEntry[]>;
     clearLogEntriesAsync(): Promise<void>;
     fetchUpdateAsync(): Promise<UpdateFetchResultFailure>;
+    setUpdateURLAndRequestHeadersOverride(_configOverride: {
+        updateUrl: string;
+        requestHeaders: Record<string, string>;
+    } | null): void;
+    showReloadScreen(_options?: ReloadScreenOptions): Promise<void>;
+    hideReloadScreen(): Promise<void>;
 }
 declare const _default: typeof ExpoUpdatesModule;
 export default _default;
