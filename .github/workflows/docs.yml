@@ -41,7 +41,7 @@ jobs:
       - name: ➕ Add `bin` to GITHUB_PATH
         run: echo "$(pwd)/bin" >> $GITHUB_PATH
       - name: 📝 Regenerate `unversioned` data for Docs
-        run: expotools generate-docs-api-data
+        run: yarn add --dev @expo/spawn-async && expotools generate-docs-api-data
       - name: 🧶 Yarn install
         working-directory: docs
         if: steps.expo-caches.outputs.yarn-docs-hit != 'true'
@@ -80,7 +80,7 @@ jobs:
           AWS_BUCKET: 'docs.expo.dev'
       - name: 🔔 Notify on Slack
         uses: 8398a7/action-slack@v3
-        if: failure() && github.event.ref == 'refs/heads/main'
+        if: failure() && github.event.ref == 'refs/heads/main' && secrets.SLACK_WEBHOOK_URL
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SLACK_WEBHOOK_URL: ${{ secrets.slack_webhook_docs }}

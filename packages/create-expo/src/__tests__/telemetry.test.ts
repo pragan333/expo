@@ -262,10 +262,12 @@ describe('telemetry', () => {
       const [fetchRequestArgs] = fetchAsMock.mock.calls;
       const [, request] = fetchRequestArgs;
       const { batch }: { batch: any[] } = JSON.parse(String(request.body));
-      batch.every(
-        (message) =>
-          message.anonymousId === existingAnonymousId && message.userId === existingUserId
-      );
+      expect(
+        batch.every(
+          (message) =>
+            message.anonymousId === existingAnonymousId && message.userId === existingUserId
+        )
+      ).toBe(true);
     });
   });
 });

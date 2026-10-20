@@ -10,6 +10,7 @@ import {
   UpdateFetchResultSuccess,
   UpdatesLogEntry,
   UpdatesNativeStateMachineContext,
+  ReloadScreenOptions,
 } from './Updates.types';
 
 export type UpdatesEvents = {
@@ -63,7 +64,7 @@ export interface UpdatesModuleInterface {
     rollbackString?: string;
   };
 
-  reload: () => Promise<void>;
+  reload: (options?: ReloadScreenOptions | null) => Promise<void>;
   checkForUpdateAsync: () => Promise<
     | UpdateCheckResultRollBack
     | (Omit<UpdateCheckResultAvailable, 'manifest'> &
@@ -80,6 +81,11 @@ export interface UpdatesModuleInterface {
     | UpdateFetchResultFailure
     | UpdateFetchResultRollBackToEmbedded
   >;
+  setUpdateURLAndRequestHeadersOverride: (
+    configOverride: { updateUrl: string; requestHeaders: Record<string, string> } | null
+  ) => void;
+  showReloadScreen: (options?: ReloadScreenOptions) => Promise<void>;
+  hideReloadScreen: () => Promise<void>;
 }
 
 /**
@@ -112,7 +118,7 @@ export declare class ExpoUpdatesModule
     rollbackString?: string;
   };
 
-  reload: () => Promise<void>;
+  reload: (options?: ReloadScreenOptions | null) => Promise<void>;
   checkForUpdateAsync: () => Promise<
     | UpdateCheckResultRollBack
     | (Omit<UpdateCheckResultAvailable, 'manifest'> &
@@ -129,4 +135,9 @@ export declare class ExpoUpdatesModule
     | UpdateFetchResultFailure
     | UpdateFetchResultRollBackToEmbedded
   >;
+  setUpdateURLAndRequestHeadersOverride: (
+    configOverride: { updateUrl: string; requestHeaders: Record<string, string> } | null
+  ) => void;
+  showReloadScreen: (options?: ReloadScreenOptions) => Promise<void>;
+  hideReloadScreen: () => Promise<void>;
 }

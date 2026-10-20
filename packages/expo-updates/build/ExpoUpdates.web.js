@@ -25,6 +25,7 @@ class ExpoUpdatesModule extends NativeModule {
         isRestarting: false,
         restartCount: 0,
         sequenceNumber: 0,
+        downloadProgress: 0,
     };
     async reload() {
         if (typeof window !== 'undefined')
@@ -48,6 +49,15 @@ class ExpoUpdatesModule extends NativeModule {
     async clearLogEntriesAsync() { }
     async fetchUpdateAsync() {
         return { isNew: false, manifest: undefined, isRollBackToEmbedded: false };
+    }
+    setUpdateURLAndRequestHeadersOverride(_configOverride) {
+        // No-op on web
+    }
+    async showReloadScreen(_options) {
+        // No-op on web
+    }
+    async hideReloadScreen() {
+        // No-op on web
     }
 }
 export default registerWebModule(ExpoUpdatesModule, 'ExpoUpdates');
