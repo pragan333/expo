@@ -15,7 +15,7 @@ interface Joke {
 const FALLBACK_JOKES: Joke[] = [
   {
     type: 'general',
-    setup: 'Why don\'t scientists trust atoms?',
+    setup: "Why don't scientists trust atoms?",
     punchline: 'Because they make up everything!',
     id: 1,
   },
@@ -47,34 +47,34 @@ export default function JokeGeneratorScreen() {
   });
 
   const fetchRandomJoke = async () => {
-    setState(prev => ({ ...prev, loading: true, error: null }));
-    
+    setState((prev) => ({ ...prev, loading: true, error: null }));
+
     try {
       const response = await fetch('https://official-joke-api.appspot.com/random_joke');
-      
+
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-      
+
       const joke: Joke = await response.json();
       setState({ joke, loading: false, error: null });
     } catch (error) {
       // If API fails, use fallback jokes for demo purposes
       const randomIndex = Math.floor(Math.random() * FALLBACK_JOKES.length);
       const fallbackJoke = FALLBACK_JOKES[randomIndex];
-      
+
       const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred';
       console.warn('Joke API failed, using fallback:', errorMessage);
-      
-      setState({ 
-        joke: { ...fallbackJoke, type: `${fallbackJoke.type} (offline)` }, 
-        loading: false, 
-        error: null 
+
+      setState({
+        joke: { ...fallbackJoke, type: `${fallbackJoke.type} (offline)` },
+        loading: false,
+        error: null,
       });
-      
+
       // Show a brief toast-like message instead of blocking alert
       Alert.alert(
-        'Network Notice', 
+        'Network Notice',
         'Using offline jokes. Check your internet connection for fresh content.',
         [{ text: 'OK' }],
         { cancelable: true }
@@ -88,7 +88,7 @@ export default function JokeGeneratorScreen() {
     <ScrollView style={styles.container}>
       <View style={styles.content}>
         <HeadingText style={styles.title}>Random Joke Generator</HeadingText>
-        
+
         <Text style={styles.description}>
           Tap the button below to fetch a random joke from the Official Joke API!
         </Text>
@@ -110,10 +110,10 @@ export default function JokeGeneratorScreen() {
           <View style={styles.jokeContainer}>
             <HeadingText style={styles.jokeLabel}>Setup:</HeadingText>
             <Text style={styles.jokeSetup}>{joke.setup}</Text>
-            
+
             <HeadingText style={styles.jokeLabel}>Punchline:</HeadingText>
             <Text style={styles.jokePunchline}>{joke.punchline}</Text>
-            
+
             <Text style={styles.jokeInfo}>
               Type: {joke.type} | ID: {joke.id}
             </Text>
